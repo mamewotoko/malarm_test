@@ -12,6 +12,8 @@ XXX TO BE WRITTEN... XXX
 ## TODO:
 - capture screen
 -- use communication between host and target
+- use maven
+http://code.google.com/p/robotium/wiki/Maven
 
 ## REFERENCE:
 - Robotium: http://code.google.com/p/robotium/
