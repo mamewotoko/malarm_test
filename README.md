@@ -14,6 +14,7 @@ XXX TO BE WRITTEN... XXX
 -- use communication between host and target
 - use maven
 http://code.google.com/p/robotium/wiki/Maven
+- ask Jenkins to test malarm!?
 
 ## REFERENCE:
 - Robotium: http://code.google.com/p/robotium/
