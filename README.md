@@ -21,11 +21,12 @@ Malarm source repository: git://github.com/mamewotoko/malarm.git
     adb shell am instrument -w com.mamewo.malarm_test/android.test.InstrumentationTestRunner
 
 ## TODO
-- capture screen
--- use communication between host and target
+- capture screen in more useful way
 
 ## Reference
 - Robotium: http://code.google.com/p/robotium/
+- How to use ddmslib to capture screen shot
+http://blog.codetastrophe.com/2008/12/using-androiddebugbridge-api-to-get.html
 
 ----
 Takashi Masuyama < mamewotoko@gmail.com >  
