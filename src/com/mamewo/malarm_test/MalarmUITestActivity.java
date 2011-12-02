@@ -32,6 +32,26 @@ public class MalarmUITestActivity extends ActivityInstrumentationTestCase2<Malar
 	private String _hostname = "192.168.0.20";
 	//set true to capture screen (it requires CaptureServer in mimicj)
 	private boolean _support_capture = false;
+	private static class Name2Index {
+		String _name;
+		int _index;
+		
+		public Name2Index(String name, int index) {
+			_name = name;
+			_index = index;
+		}
+	}
+
+	private static Name2Index[] PREF_TABLE = null;
+
+	private int lookup(Name2Index[] table, String name) {
+		for (Name2Index entry : table) {
+			if (entry._name.equals(name)) {
+				return entry._index;
+			}
+		}
+		return -1;
+	}
 	
 	public void initCapture() throws IOException {
 		if (!_support_capture) {
@@ -77,9 +97,15 @@ public class MalarmUITestActivity extends ActivityInstrumentationTestCase2<Malar
 
 	@Override
 	public void setUp() throws Exception {
-		System.out.println("setUp is called");
+		Log.i("malarm_test", "setUp is called " + PREF_TABLE);
 		solo = new Solo(getInstrumentation(), getActivity());
 		initCapture();
+		//static field is cleared to null, why?
+		PREF_TABLE = new Name2Index[] {
+			new Name2Index("site", 0),
+			new Name2Index("help", 8),
+			new Name2Index("version", 9)
+		};
 	}
 	
 	//name of test case MUST begin with "test"
@@ -119,12 +145,32 @@ public class MalarmUITestActivity extends ActivityInstrumentationTestCase2<Malar
 	}
 	
 	@Smoke
-	public void testPreference() throws Exception {
+	public void testSitePreference() throws Exception {
 		solo.clickOnMenuItem(solo.getString(com.mamewo.malarm.R.string.pref_menu));
 		//select site configuration
-		solo.clickInList(0);
+		//TODO: make function...
+		solo.clickInList(lookup(PREF_TABLE, "site"));
 		Assert.assertTrue(true);
 		captureScreen("test_Preference.png");
+	}
+
+	public void testHelp() {
+		solo.clickOnMenuItem(solo.getString(com.mamewo.malarm.R.string.pref_menu));
+		//select site configuration
+		//TODO: make function...
+		solo.clickInList(lookup(PREF_TABLE, "help"));
+		solo.sleep(4000);
+		Assert.assertTrue(true);
+		captureScreen("test_Help.png");
+	}
+
+	public void testVersion() {
+		solo.clickOnMenuItem(solo.getString(com.mamewo.malarm.R.string.pref_menu));
+		//select site configuration
+		//TODO: make function...
+		solo.clickInList(lookup(PREF_TABLE, "version"));
+		Assert.assertTrue(true);
+		captureScreen("test_Version.png");
 	}
 	
 	//TODO: add test of widget
