@@ -27,7 +27,8 @@ Malarm source repository: git://github.com/mamewotoko/malarm.git
 - Robotium: http://code.google.com/p/robotium/
 - How to use ddmslib to capture screen shot
 http://blog.codetastrophe.com/2008/12/using-androiddebugbridge-api-to-get.html
-
+- Screenshots with Android NativeDriver - internals
+http://nativedriver.googlecode.com/files/Screenshot_on_Android_Internals.pdf
 ----
 Takashi Masuyama < mamewotoko@gmail.com >  
 http://www002.upp.so-net.ne.jp/mamewo/
