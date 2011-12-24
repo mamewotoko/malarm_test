@@ -2,12 +2,8 @@ package com.mamewo.malarm_test;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -103,8 +99,8 @@ public class MalarmUITestActivity extends ActivityInstrumentationTestCase2<Malar
 		//static field is cleared to null, why?
 		PREF_TABLE = new Name2Index[] {
 			new Name2Index("site", 0),
-			new Name2Index("help", 8),
-			new Name2Index("version", 9)
+			new Name2Index("help", 11),
+			new Name2Index("version", 12)
 		};
 	}
 	
