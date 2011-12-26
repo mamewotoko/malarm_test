@@ -99,6 +99,8 @@ public class MalarmUITestActivity extends ActivityInstrumentationTestCase2<Malar
 		//static field is cleared to null, why?
 		PREF_TABLE = new Name2Index[] {
 			new Name2Index("site", 0),
+			new Name2Index("default_time", 3),
+			new Name2Index("sleep_volume", 5),
 			new Name2Index("help", 11),
 			new Name2Index("version", 12)
 		};
@@ -133,8 +135,8 @@ public class MalarmUITestActivity extends ActivityInstrumentationTestCase2<Malar
 		Calendar now = new GregorianCalendar();
 		TimePicker picker = solo.getCurrentTimePickers().get(0);
 		solo.clickOnButton(solo.getString(com.mamewo.malarm.R.string.set_now_short));
-		//umm... yeild to target activity
-		solo.sleep(500);
+		//umm... yield to target activity
+		solo.sleep(200);
 		Assert.assertTrue("picker current hour", now.get(Calendar.HOUR_OF_DAY) == picker.getCurrentHour());
 		Assert.assertTrue("picker current min", now.get(Calendar.MINUTE) == picker.getCurrentMinute());
 		captureScreen("test_setNow.png");
@@ -149,7 +151,23 @@ public class MalarmUITestActivity extends ActivityInstrumentationTestCase2<Malar
 		Assert.assertTrue(true);
 		captureScreen("test_Preference.png");
 	}
+	
+	@Smoke
+	public void testVolumeDialog() throws Exception {
+		solo.clickOnMenuItem(solo.getString(com.mamewo.malarm.R.string.pref_menu));
+		solo.clickInList(lookup(PREF_TABLE, "sleep_volume"));
+		Assert.assertTrue(true);
+	}
 
+	//add double tap test of webview
+	
+	@Smoke
+	public void testDefaultTimePreference() throws Exception {
+		solo.clickOnMenuItem(solo.getString(com.mamewo.malarm.R.string.pref_menu));
+		solo.clickInList(lookup(PREF_TABLE, "default_time"));
+		Assert.assertTrue(true);
+	}
+	
 	public void testHelp() {
 		solo.clickOnMenuItem(solo.getString(com.mamewo.malarm.R.string.pref_menu));
 		//select site configuration
