@@ -101,8 +101,9 @@ public class MalarmUITestActivity extends ActivityInstrumentationTestCase2<Malar
 			new Name2Index("site", 0),
 			new Name2Index("default_time", 3),
 			new Name2Index("sleep_volume", 5),
-			new Name2Index("help", 11),
-			new Name2Index("version", 12)
+			new Name2Index("sleep_playlist", 8),
+			new Name2Index("help", 13),
+			new Name2Index("version", 14)
 		};
 	}
 	
@@ -168,20 +169,23 @@ public class MalarmUITestActivity extends ActivityInstrumentationTestCase2<Malar
 		Assert.assertTrue(true);
 	}
 	
+	public void testSleepPlaylist() {
+		solo.clickOnMenuItem(solo.getString(com.mamewo.malarm.R.string.pref_menu));
+		solo.clickInList(lookup(PREF_TABLE, "sleep_playlist"));
+		solo.scrollDown();
+		Assert.assertTrue(true);
+	}
+	
 	public void testHelp() {
 		solo.clickOnMenuItem(solo.getString(com.mamewo.malarm.R.string.pref_menu));
-		//select site configuration
-		//TODO: make function...
 		solo.clickInList(lookup(PREF_TABLE, "help"));
 		solo.sleep(4000);
 		Assert.assertTrue(true);
 		captureScreen("test_Help.png");
 	}
-
+	
 	public void testVersion() {
 		solo.clickOnMenuItem(solo.getString(com.mamewo.malarm.R.string.pref_menu));
-		//select site configuration
-		//TODO: make function...
 		solo.clickInList(lookup(PREF_TABLE, "version"));
 		Assert.assertTrue(true);
 		captureScreen("test_Version.png");
