@@ -23,6 +23,7 @@ Malarm source repository: git://github.com/mamewotoko/malarm.git
 ## TODO
 - capture screen in more useful way
 - check version of malarm before testing
+- fix setAlarm test
 
 ## Reference
 - Robotium: http://code.google.com/p/robotium/

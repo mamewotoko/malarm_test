@@ -15,7 +15,9 @@ import android.util.Log;
 import android.widget.TimePicker;
 
 import com.jayway.android.robotium.solo.Solo;
-import com.mamewo.malarm.*;
+import com.mamewo.malarm24.*;
+
+import com.mamewo.malarm24.R;
 
 public class MalarmUITestActivity extends ActivityInstrumentationTestCase2<MalarmActivity> {
 
@@ -88,7 +90,7 @@ public class MalarmUITestActivity extends ActivityInstrumentationTestCase2<Malar
 	}
 	
 	public MalarmUITestActivity() {
-		super("com.mamewo.malarm", MalarmActivity.class);
+		super("com.mamewo.malarm24", MalarmActivity.class);
 	}
 
 	@Override
@@ -110,32 +112,32 @@ public class MalarmUITestActivity extends ActivityInstrumentationTestCase2<Malar
 	//name of test case MUST begin with "test"
 	@Smoke
 	public void testSetAlarm() throws Exception {
-		solo.clickOnMenuItem(solo.getString(com.mamewo.malarm.R.string.pref_menu));
+		solo.clickOnMenuItem(solo.getString(R.string.pref_menu));
 		//use MediaPlayer
 		solo.getCurrentCheckBoxes().get(0).setChecked(false);
 		solo.goBack();
 		Date now = new Date(System.currentTimeMillis() + 60 * 1000);
 		solo.setTimePicker(0, now.getHours(), now.getMinutes());
-		solo.clickOnButton(solo.getString(com.mamewo.malarm.R.string.set_alarm));
+		solo.clickOnButton(solo.getString(R.string.set_alarm));
 		Assert.assertTrue("check label", solo.getText(0).getText().length() > 0);
 		//TODO: go home screen
 		solo.goBack();
 		solo.sleep(61 * 1000);
-		Assert.assertTrue("Switch alarm button wording", solo.searchToggleButton(solo.getString(com.mamewo.malarm.R.string.stop_alarm)));
-		Assert.assertTrue("Correct alarm toggle button state", solo.isToggleButtonChecked(solo.getString(com.mamewo.malarm.R.string.stop_alarm)));
+		Assert.assertTrue("Switch alarm button wording", solo.searchToggleButton(solo.getString(R.string.stop_alarm)));
+		Assert.assertTrue("Correct alarm toggle button state", solo.isToggleButtonChecked(solo.getString(R.string.stop_alarm)));
 		//TODO: check music?
 		//TODO: check vibration
-		solo.clickOnButton(solo.getString(com.mamewo.malarm.R.string.stop_alarm));
+		solo.clickOnButton(solo.getString(R.string.stop_alarm));
 		solo.sleep(1000);
 		captureScreen("test_setAlarmTest.png");
-		Assert.assertTrue("Alarm stopped", !solo.isToggleButtonChecked(solo.getString(com.mamewo.malarm.R.string.set_alarm)));
+		Assert.assertTrue("Alarm stopped", !solo.isToggleButtonChecked(solo.getString(R.string.set_alarm)));
 	}
 	
 	@Smoke
 	public void testSetNow() throws Exception {
 		Calendar now = new GregorianCalendar();
 		TimePicker picker = solo.getCurrentTimePickers().get(0);
-		solo.clickOnButton(solo.getString(com.mamewo.malarm.R.string.set_now_short));
+		solo.clickOnButton(solo.getString(R.string.set_now_short));
 		//umm... yield to target activity
 		solo.sleep(200);
 		Assert.assertTrue("picker current hour", now.get(Calendar.HOUR_OF_DAY) == picker.getCurrentHour());
@@ -145,7 +147,7 @@ public class MalarmUITestActivity extends ActivityInstrumentationTestCase2<Malar
 	
 	@Smoke
 	public void testSitePreference() throws Exception {
-		solo.clickOnMenuItem(solo.getString(com.mamewo.malarm.R.string.pref_menu));
+		solo.clickOnMenuItem(solo.getString(R.string.pref_menu));
 		//select site configuration
 		//TODO: make function...
 		solo.clickInList(lookup(PREF_TABLE, "site"));
@@ -155,7 +157,7 @@ public class MalarmUITestActivity extends ActivityInstrumentationTestCase2<Malar
 	
 	@Smoke
 	public void testVolumeDialog() throws Exception {
-		solo.clickOnMenuItem(solo.getString(com.mamewo.malarm.R.string.pref_menu));
+		solo.clickOnMenuItem(solo.getString(R.string.pref_menu));
 		solo.clickInList(lookup(PREF_TABLE, "sleep_volume"));
 		Assert.assertTrue(true);
 	}
@@ -164,20 +166,20 @@ public class MalarmUITestActivity extends ActivityInstrumentationTestCase2<Malar
 	
 	@Smoke
 	public void testDefaultTimePreference() throws Exception {
-		solo.clickOnMenuItem(solo.getString(com.mamewo.malarm.R.string.pref_menu));
+		solo.clickOnMenuItem(solo.getString(R.string.pref_menu));
 		solo.clickInList(lookup(PREF_TABLE, "default_time"));
 		Assert.assertTrue(true);
 	}
 	
 	public void testSleepPlaylist() {
-		solo.clickOnMenuItem(solo.getString(com.mamewo.malarm.R.string.pref_menu));
+		solo.clickOnMenuItem(solo.getString(R.string.pref_menu));
 		solo.clickInList(lookup(PREF_TABLE, "sleep_playlist"));
 		solo.scrollDown();
 		Assert.assertTrue(true);
 	}
 	
 	public void testHelp() {
-		solo.clickOnMenuItem(solo.getString(com.mamewo.malarm.R.string.pref_menu));
+		solo.clickOnMenuItem(solo.getString(R.string.pref_menu));
 		solo.clickInList(lookup(PREF_TABLE, "help"));
 		solo.sleep(4000);
 		Assert.assertTrue(true);
@@ -185,7 +187,7 @@ public class MalarmUITestActivity extends ActivityInstrumentationTestCase2<Malar
 	}
 	
 	public void testVersion() {
-		solo.clickOnMenuItem(solo.getString(com.mamewo.malarm.R.string.pref_menu));
+		solo.clickOnMenuItem(solo.getString(R.string.pref_menu));
 		solo.clickInList(lookup(PREF_TABLE, "version"));
 		Assert.assertTrue(true);
 		captureScreen("test_Version.png");
