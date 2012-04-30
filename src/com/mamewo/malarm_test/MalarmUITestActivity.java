@@ -112,10 +112,10 @@ public class MalarmUITestActivity extends ActivityInstrumentationTestCase2<Malar
 	//name of test case MUST begin with "test"
 	@Smoke
 	public void testSetAlarm() throws Exception {
-		solo.clickOnMenuItem(solo.getString(R.string.pref_menu));
+		//olo.clickOnMenuItem(solo.getString(R.string.pref_menu));
 		//use MediaPlayer
-		solo.getCurrentCheckBoxes().get(0).setChecked(false);
-		solo.goBack();
+		//solo.getCurrentCheckBoxes().get(0).setChecked(false);
+		//solo.goBack();
 		Date now = new Date(System.currentTimeMillis() + 60 * 1000);
 		solo.setTimePicker(0, now.getHours(), now.getMinutes());
 		solo.clickOnButton(solo.getString(R.string.set_alarm));
