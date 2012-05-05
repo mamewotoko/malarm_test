@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>Test of Android alarm application&#xd;
+http://mamewotoko.github.com/malarm_test/</description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>true</blockBuildWhenUpstreamBuilding>
+  <triggers class="vector"/>
+  <concurrentBuild>false</concurrentBuild>
+  <customWorkspace>jobs/malarm/workspace/test/malarm_test/</customWorkspace>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>pwd
+cat &lt;&lt; &quot;END_OF_FILE&quot; &gt; local.properties
+sdk.dir=/Users/tak/bin/android-sdk-mac_x86
+build.is.signing.debug=false
+key.store=/tmp/.android/debug.keystore
+#key.alias=key_alias
+END_OF_FILE
+/opt/local/bin/wget http://robotium.googlecode.com/files/robotium-solo-3.2.1.jar -O libs/robotium-solo-3.2.1.jar</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Ant>
+      <targets>clean
+debug</targets>
+    </hudson.tasks.Ant>
+  </builders>
+  <publishers>
+    <hudson.tasks.Mailer>
+      <recipients>mamewotoko@gmail.com</recipients>
+      <dontNotifyEveryUnstableBuild>false</dontNotifyEveryUnstableBuild>
+      <sendToIndividuals>false</sendToIndividuals>
+    </hudson.tasks.Mailer>
+  </publishers>
+  <buildWrappers/>
+</project>
