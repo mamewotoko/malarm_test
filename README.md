@@ -5,14 +5,14 @@ This is a UI test of malarm using Robotium library
 
 ## How to run:
 1. Download robotium-solo-xx.jar file
- e.g. execute lib/setup.sh in lib directory
+ e.g. execute libs/setup.sh in lib directory
 
-2. Put robotium-solo-xx.jar into lib directory
+2. Put robotium-solo-xx.jar into libs directory
 3. Deploy Malarm application
 
 Malarm source repository: git://github.com/mamewotoko/malarm.git
 
-4. Start eclipse and add lib/robotium-solo-xx.jar into build path
+4. Start eclipse and add libs/robotium-solo-xx.jar into build path
 5. Build
 6. Run as Android JUnit test
 
