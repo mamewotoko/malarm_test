@@ -19,8 +19,9 @@ import com.mamewo.malarm24.*;
 
 import com.mamewo.malarm24.R;
 
-public class MalarmUITestActivity extends ActivityInstrumentationTestCase2<MalarmActivity> {
-
+public class MalarmUITestActivity
+	extends ActivityInstrumentationTestCase2<MalarmActivity>
+{
 	private static final int PORT = 3333;
 
 	private final static String PACKAGE_NAME = "malarm_test";
@@ -194,7 +195,6 @@ public class MalarmUITestActivity extends ActivityInstrumentationTestCase2<Malar
 	}
 	
 	//TODO: add test of widget
-	
 	@Override
 	public void tearDown() throws Exception {
 		System.out.println("tearDown is called");
