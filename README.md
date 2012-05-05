@@ -27,6 +27,10 @@ or
 - check version of malarm before testing
 - fix setAlarm test
 
+## memo
+- command line from build to test
+ant debug installd test
+
 ## Reference
 - Robotium:
 http://code.google.com/p/robotium/
