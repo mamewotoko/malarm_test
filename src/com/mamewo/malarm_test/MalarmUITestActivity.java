@@ -7,16 +7,11 @@ import java.net.Socket;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
-
 import junit.framework.Assert;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.speech.RecognizerIntent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.suitebuilder.annotation.Smoke;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -168,9 +163,9 @@ public class MalarmUITestActivity
 	}
 
 	//TODO: voice button?
-	
 	public void testNextTuneShort() {
-		solo.clickOnImageButton(1);
+		View nextButton = solo.getView(R.id.next_button);
+		solo.clickOnView(nextButton);
 		solo.sleep(2000);
 		//speech recognition dialog
 		//capture
@@ -178,15 +173,17 @@ public class MalarmUITestActivity
 	}
 
 	public void testNextTuneLong() {
-		solo.clickLongOnView(solo.getImageButton(1));
+		View nextButton = solo.getView(R.id.next_button);
+		solo.clickLongOnView(nextButton);
 		solo.sleep(2000);
 		TextView view = (TextView)solo.getView(R.id.sleep_time_label);
 		String text = view.getText().toString();
 		Log.i("malrm_test", "LongPressNext: text = " + text);
 		Assert.assertTrue(text != null);
-		//default value..
-		Assert.assertTrue(text.startsWith("90"));
+		//TODO: check preference value...
+		Assert.assertTrue(text.startsWith("60"));
 		solo.clickOnMenuItem(solo.getString(R.string.stop_music));
+		solo.sleep(2000);
 		String afterText = view.getText().toString();
 		Assert.assertTrue(afterText == null || afterText.length() == 0);
 	}
