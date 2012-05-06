@@ -33,6 +33,13 @@ ant debug
 ant installd test
 - monkey test (random UI test)
 adb shell monkey -p com.mamewo.malarm24 -v 10000
+- EMMA (code coverage)
+-- build malarm with emma
+ant emma debug 
+-- install malarm
+ant debug
+ant emma installd
+-- coverage output is stored as coverage/index.html.
 
 ## Reference
 - Robotium:
