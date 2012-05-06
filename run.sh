@@ -23,6 +23,7 @@ echo start testing
 adb connect localhost:$PORT
 adb shell input keyevent 3 
 adb shell input keyevent 82
+ant uninstall
 ant debug
 ant $TARGET
 
