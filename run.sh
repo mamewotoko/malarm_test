@@ -1,4 +1,6 @@
 #! /bin/sh
+# start Android emulator, then install and test
+
 PATH=$PATH:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools
 AVD=XperiaEmu
 PORT=5554

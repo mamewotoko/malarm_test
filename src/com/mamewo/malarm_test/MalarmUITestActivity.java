@@ -7,11 +7,18 @@ import java.net.Socket;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import junit.framework.Assert;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.speech.RecognizerIntent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.suitebuilder.annotation.Smoke;
 import android.util.Log;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.jayway.android.robotium.solo.Solo;
@@ -109,10 +116,24 @@ public class MalarmUITestActivity
 			new Name2Index("version", 14)
 		};
 	}
-	
+
+	@Override
+	public void tearDown() throws Exception {
+		System.out.println("tearDown is called");
+		try {
+			//Robotium will finish all the activities that have been opened
+			solo.finalize();
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		finalizeCapture();
+		getActivity().finish();
+		super.tearDown();
+	} 
+
 	//name of test case MUST begin with "test"
 	@Smoke
-	public void testSetAlarm() throws Exception {
+	public void testSetAlarm() {
 		//olo.clickOnMenuItem(solo.getString(R.string.pref_menu));
 		//use MediaPlayer
 		//solo.getCurrentCheckBoxes().get(0).setChecked(false);
@@ -135,7 +156,7 @@ public class MalarmUITestActivity
 	}
 	
 	@Smoke
-	public void testSetNow() throws Exception {
+	public void testSetNow() {
 		Calendar now = new GregorianCalendar();
 		TimePicker picker = solo.getCurrentTimePickers().get(0);
 		solo.clickOnButton(solo.getString(R.string.set_now_short));
@@ -145,9 +166,49 @@ public class MalarmUITestActivity
 		Assert.assertTrue("picker current min", now.get(Calendar.MINUTE) == picker.getCurrentMinute());
 		captureScreen("test_setNow.png");
 	}
+
+	//TODO: voice button?
 	
+	public void testNextTuneShort() {
+		solo.clickOnImageButton(1);
+		solo.sleep(2000);
+		//speech recognition dialog
+		//capture
+		solo.sendKey(Solo.DELETE);
+	}
+
+	public void testNextTuneLong() {
+		solo.clickLongOnView(solo.getImageButton(1));
+		solo.sleep(2000);
+		TextView view = (TextView)solo.getView(R.id.sleep_time_label);
+		String text = view.getText().toString();
+		Log.i("malrm_test", "LongPressNext: text = " + text);
+		Assert.assertTrue(text != null);
+		//default value..
+		Assert.assertTrue(text.startsWith("90"));
+		solo.clickOnMenuItem(solo.getString(R.string.stop_music));
+		String afterText = view.getText().toString();
+		Assert.assertTrue(afterText == null || afterText.length() == 0);
+	}
+
+	/////////////////
+	//test menu
+	public void testStopVibrationMenu() {
+		solo.clickOnMenuItem(solo.getString(R.string.stop_vibration));
+		solo.sleep(2000);
+	}
+	
+	public void testPlayMenu() {
+		solo.clickOnMenuItem(solo.getString(R.string.play_wakeup));
+		solo.sleep(5000);
+		solo.clickOnMenuItem(solo.getString(R.string.stop_music));
+		solo.sleep(1000);
+	}
+	
+	/////////////////
+	//config screen
 	@Smoke
-	public void testSitePreference() throws Exception {
+	public void testSitePreference() {
 		solo.clickOnMenuItem(solo.getString(R.string.pref_menu));
 		//select site configuration
 		//TODO: make function...
@@ -157,55 +218,80 @@ public class MalarmUITestActivity
 	}
 	
 	@Smoke
-	public void testVolumeDialog() throws Exception {
+	public void testCreatePlaylists() {
+		solo.clickOnMenuItem(solo.getString(R.string.pref_menu));
+		solo.clickInList(lookup(PREF_TABLE, "create_playlist"));
+		solo.sleep(5000);
+		Assert.assertTrue(true);
+	}
+	
+	@Smoke
+	public void testSleepVolume() {
 		solo.clickOnMenuItem(solo.getString(R.string.pref_menu));
 		solo.clickInList(lookup(PREF_TABLE, "sleep_volume"));
+		//TODO: push plus/minus
+		Assert.assertTrue(true);
+	}
+
+	@Smoke
+	public void testWakeupVolume() {
+		solo.clickOnMenuItem(solo.getString(R.string.pref_menu));
+		solo.clickInList(lookup(PREF_TABLE, "wakeup_volume"));
+		//TODO: push plus/minus
 		Assert.assertTrue(true);
 	}
 
 	//add double tap test of webview
 	
 	@Smoke
-	public void testDefaultTimePreference() throws Exception {
+	public void testDefaultTimePreference() {
 		solo.clickOnMenuItem(solo.getString(R.string.pref_menu));
 		solo.clickInList(lookup(PREF_TABLE, "default_time"));
 		Assert.assertTrue(true);
+	}
+
+	@Smoke
+	public void testVibration() {
+		solo.clickOnMenuItem(solo.getString(R.string.pref_menu));
+		solo.clickInList(lookup(PREF_TABLE, "vibrate"));
+		solo.sleep(1000);
+		solo.clickInList(lookup(PREF_TABLE, "vibrate"));
 	}
 	
 	public void testSleepPlaylist() {
 		solo.clickOnMenuItem(solo.getString(R.string.pref_menu));
 		solo.clickInList(lookup(PREF_TABLE, "sleep_playlist"));
 		solo.scrollDown();
-		Assert.assertTrue(true);
+	}
+	
+	public void testClearCache() {
+		solo.clickOnMenuItem(solo.getString(R.string.pref_menu));
+		solo.clickInList(lookup(PREF_TABLE, "clear_webview_cache"));
+		solo.sleep(500);
 	}
 	
 	public void testHelp() {
 		solo.clickOnMenuItem(solo.getString(R.string.pref_menu));
 		solo.clickInList(lookup(PREF_TABLE, "help"));
 		solo.sleep(4000);
-		Assert.assertTrue(true);
 		captureScreen("test_Help.png");
 	}
 	
 	public void testVersion() {
 		solo.clickOnMenuItem(solo.getString(R.string.pref_menu));
 		solo.clickInList(lookup(PREF_TABLE, "version"));
-		Assert.assertTrue(true);
 		captureScreen("test_Version.png");
 	}
+
+	public void testPlaylistLong() {
+		solo.clickOnMenuItem(solo.getString(R.string.pref_menu));
+		solo.clickInList(lookup(PREF_TABLE, "sleep_playlist"));
+		solo.sleep(500);
+		solo.clickLongInList(0);
+		captureScreen("test_playlistlong.png");
+	}
 	
+	//TODO: default config test	
 	//TODO: add test of widget
-	@Override
-	public void tearDown() throws Exception {
-		System.out.println("tearDown is called");
-		try {
-			//Robotium will finish all the activities that have been opened
-			solo.finalize();
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-		finalizeCapture();
-		getActivity().finish();
-		super.tearDown();
-	} 
+	//TODO: playlist edit
 }

@@ -31,6 +31,8 @@ or
 - command line from build to test
 ant debug
 ant installd test
+- monkey test (random UI test)
+adb shell monkey -p com.mamewo.malarm24 -v 10000
 
 ## Reference
 - Robotium:
