@@ -29,7 +29,8 @@ or
 
 ## memo
 - command line from build to test
-ant debug installd test
+ant debug
+ant installd test
 
 ## Reference
 - Robotium:
