@@ -23,9 +23,12 @@ or
     adb shell am instrument -w com.mamewo.malarm_test/android.test.InstrumentationTestRunner
 
 ## TODO
+- merge capture code (mimicj)
 - capture screen in more useful way
+- give test parameter from child class and test in abstract parent class
 - check version of malarm before testing
 - fix setAlarm test
+- 
 
 ## memo
 - command line from build to test
