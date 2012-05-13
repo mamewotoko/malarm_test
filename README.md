@@ -1,7 +1,17 @@
 # malarm_test - UI test of malarm application
 ## What is this?
 
-This is a UI test of malarm using Robotium library
+This is a UI test of malarm using Robotium library. This is submodule of
+malarm.
+
+## How to clone
+1. Clone malarm
+ git clone git://github.com/mamewotoko/malarm.git malarm
+2. In cloned directory, clone submoudle
+ cd malarm
+ git submodule init
+ git submodule update
+3. malarm_test is cloned in test/malarm_test directory.
 
 ## How to run:
 1. Download robotium-solo-xx.jar file
@@ -51,6 +61,7 @@ http://code.google.com/p/robotium/
 http://blog.codetastrophe.com/2008/12/using-androiddebugbridge-api-to-get.html
 - Screenshots with Android NativeDriver - internals
 http://nativedriver.googlecode.com/files/Screenshot_on_Android_Internals.pdf
+
 ----
 Takashi Masuyama < mamewotoko@gmail.com >  
 http://www002.upp.so-net.ne.jp/mamewo/
