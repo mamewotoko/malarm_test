@@ -76,7 +76,8 @@ public class TestPortraitUI
 		try {
 			_bw.close();
 			_sock.close();
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -90,10 +91,12 @@ public class TestPortraitUI
 			_bw.flush();
 			//TODO: wait until captured
 			Thread.sleep(1000);
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			Log.i ("malarm_test", "capture failed: " + filename);
 			e.printStackTrace();
-		} catch (InterruptedException e) {
+		}
+		catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
@@ -124,7 +127,8 @@ public class TestPortraitUI
 		try {
 			//Robotium will finish all the activities that have been opened
 			solo_.finalize();
-		} catch (Throwable e) {
+		}
+		catch (Throwable e) {
 			e.printStackTrace();
 		}
 		finalizeCapture();
@@ -135,33 +139,35 @@ public class TestPortraitUI
 	//name of test case MUST begin with "test"
 	@Smoke
 	public void testSetAlarm() {
-		//olo.clickOnMenuItem(solo.getString(R.string.pref_menu));
-		//use MediaPlayer
-		//solo.getCurrentCheckBoxes().get(0).setChecked(false);
-		//solo.goBack();
 		Date now = new Date(System.currentTimeMillis() + 60 * 1000);
 		solo_.setTimePicker(0, now.getHours(), now.getMinutes());
-		solo_.clickOnButton(solo_.getString(R.string.set_alarm));
-		Assert.assertTrue("check label", solo_.getText(0).getText().length() > 0);
-		//TODO: go home screen
+		solo_.clickOnView(solo_.getView(R.id.alarm_button));
+		solo_.sleep(500);
+		TextView targetTimeLabel = (TextView)solo_.getView(R.id.target_time_label);
+		TextView sleepTimeLabel = (TextView)solo_.getView(R.id.sleep_time_label);
+		Assert.assertTrue("check wakeup label", targetTimeLabel.getText().length() > 0);
+		Assert.assertTrue("check sleep label", sleepTimeLabel.getText().length() > 0);
 		solo_.goBack();
 		solo_.sleep(61 * 1000);
 		Assert.assertTrue("Switch alarm button wording", solo_.searchToggleButton(solo_.getString(R.string.stop_alarm)));
 		Assert.assertTrue("Correct alarm toggle button state", solo_.isToggleButtonChecked(solo_.getString(R.string.stop_alarm)));
 		//TODO: check music?
 		//TODO: check vibration
+		//TODO: check notification
 		solo_.clickOnButton(solo_.getString(R.string.stop_alarm));
 		solo_.sleep(1000);
 		captureScreen("test_setAlarmTest.png");
+		Assert.assertTrue("check wakeup label", targetTimeLabel.getText().length() == 0);
+		Assert.assertTrue("check sleep label", sleepTimeLabel.getText().length() == 0);
 		Assert.assertTrue("Alarm stopped", !solo_.isToggleButtonChecked(solo_.getString(R.string.set_alarm)));
 	}
 	
 	@Smoke
 	public void testSetNow() {
-		Calendar now = new GregorianCalendar();
 		TimePicker picker = solo_.getCurrentTimePickers().get(0);
 		solo_.clickOnButton(solo_.getString(R.string.set_now_short));
 		//umm... yield to target activity
+		Calendar now = new GregorianCalendar();
 		solo_.sleep(200);
 		Assert.assertTrue("picker current hour", now.get(Calendar.HOUR_OF_DAY) == picker.getCurrentHour());
 		Assert.assertTrue("picker current min", now.get(Calendar.MINUTE) == picker.getCurrentMinute());
@@ -187,7 +193,7 @@ public class TestPortraitUI
 		Log.i("malrm_test", "LongPressNext: text = " + text);
 		Assert.assertTrue(text != null);
 		//TODO: check preference value...
-		Assert.assertTrue(text.startsWith("60"));
+		Assert.assertTrue(text.length() > 0);
 		solo_.clickOnMenuItem(solo_.getString(R.string.stop_music));
 		solo_.sleep(2000);
 		String afterText = view.getText().toString();
