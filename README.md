@@ -33,8 +33,8 @@ or
     adb shell am instrument -w com.mamewo.malarm_test/android.test.InstrumentationTestRunner
 
 ## TODO
-- merge capture code (mimicj)
-- capture screen in more useful way
+- merge capture code (mimicj) or use scirocco
+ http://code.google.com/p/scirocco/wiki/QuickStartScirocco_JP
 - give test parameter from child class and test in abstract parent class
 - check version of malarm before testing
 - fix setAlarm test
