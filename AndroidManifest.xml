@@ -12,10 +12,10 @@
         <uses-library android:name="android.test.runner" />
     </application>
 
-    <uses-sdk android:minSdkVersion="10" />
+    <uses-sdk android:minSdkVersion="7" />
 
     <instrumentation
         android:name="android.test.InstrumentationTestRunner"
-        android:targetPackage="com.mamewo.malarm24" />
+        android:targetPackage="com.mamewo.malarm78" />
 
 </manifest>

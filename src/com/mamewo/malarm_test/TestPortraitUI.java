@@ -15,8 +15,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import com.jayway.android.robotium.solo.Solo;
-import com.mamewo.malarm24.*;
-import com.mamewo.malarm24.R;
+import com.mamewo.malarm78.*;
+import com.mamewo.malarm78.R;
 
 public class TestPortraitUI
 	extends ActivityInstrumentationTestCase2<MalarmActivity>
@@ -99,7 +99,7 @@ public class TestPortraitUI
 	}
 	
 	public TestPortraitUI() {
-		super("com.mamewo.malarm24", MalarmActivity.class);
+		super("com.mamewo.malarm78", MalarmActivity.class);
 	}
 
 	@Override
