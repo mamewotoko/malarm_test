@@ -7,8 +7,6 @@ import java.net.Socket;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Properties;
-
 import junit.framework.Assert;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.suitebuilder.annotation.Smoke;
@@ -18,7 +16,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import com.jayway.android.robotium.solo.Solo;
 import com.mamewo.malarm24.*;
-
 import com.mamewo.malarm24.R;
 
 public class TestPortraitUI
@@ -32,7 +29,7 @@ public class TestPortraitUI
 	static final
 	private int SCREEN_WIDTH = 480;
 
-	private final static String PACKAGE_NAME = "malarm_test";
+	private final static String TAG = "malarm_test";
 	protected Solo solo_;
 	private BufferedWriter _bw;
 	private Socket _sock;
@@ -57,7 +54,7 @@ public class TestPortraitUI
 				return entry._index;
 			}
 		}
-		return -1;
+		throw new RuntimeException("lookup: " + name + " is not found");
 	}
 	
 	public void initCapture() throws IOException {
@@ -111,14 +108,22 @@ public class TestPortraitUI
 		solo_ = new Solo(getInstrumentation(), getActivity());
 		initCapture();
 		//static field is cleared to null, why?
+		//crete this table automatically
 		PREF_TABLE = new Name2Index[] {
 			new Name2Index("site", 0),
-			new Name2Index("default_time", 3),
-			new Name2Index("sleep_volume", 5),
-			new Name2Index("sleep_playlist", 8),
+			new Name2Index("playlist_directory", 1),
+			new Name2Index("sleep_playlist", 2),
+			new Name2Index("wakeup_playlist", 3),
+			new Name2Index("create_playlist", 4),
+			new Name2Index("default_time", 6),
+			new Name2Index("vibration", 7),
+			new Name2Index("sleep_volume", 8),
+			new Name2Index("wakeup_volume", 9),
+			new Name2Index("clear_webview_cache", 10),
 			new Name2Index("help", 13),
 			new Name2Index("version", 14)
 		};
+		solo_.sleep(1000);
 	}
 
 	@Override
@@ -169,8 +174,8 @@ public class TestPortraitUI
 		//umm... yield to target activity
 		Calendar now = new GregorianCalendar();
 		solo_.sleep(200);
-		Assert.assertTrue("picker current hour", now.get(Calendar.HOUR_OF_DAY) == picker.getCurrentHour());
-		Assert.assertTrue("picker current min", now.get(Calendar.MINUTE) == picker.getCurrentMinute());
+		Assert.assertEquals((int)now.get(Calendar.HOUR_OF_DAY), (int)picker.getCurrentHour());
+		Assert.assertEquals((int)now.get(Calendar.MINUTE), (int)picker.getCurrentMinute());
 		captureScreen("test_setNow.png");
 	}
 
@@ -190,7 +195,7 @@ public class TestPortraitUI
 		solo_.sleep(2000);
 		TextView view = (TextView)solo_.getView(R.id.sleep_time_label);
 		String text = view.getText().toString();
-		Log.i("malrm_test", "LongPressNext: text = " + text);
+		Log.i(TAG, "LongPressNext: text = " + text);
 		Assert.assertTrue(text != null);
 		//TODO: check preference value...
 		Assert.assertTrue(text.length() > 0);
@@ -203,6 +208,7 @@ public class TestPortraitUI
 	/////////////////
 	//test menu
 	public void testStopVibrationMenu() {
+		//TODO: cannot select menu by japanese, why?
 		solo_.clickOnMenuItem(solo_.getString(R.string.stop_vibration));
 		solo_.sleep(2000);
 	}
@@ -262,9 +268,9 @@ public class TestPortraitUI
 	@Smoke
 	public void testVibration() {
 		solo_.clickOnMenuItem(solo_.getString(R.string.pref_menu));
-		solo_.clickInList(lookup(PREF_TABLE, "vibrate"));
+		solo_.clickInList(lookup(PREF_TABLE, "vibration"));
 		solo_.sleep(1000);
-		solo_.clickInList(lookup(PREF_TABLE, "vibrate"));
+		solo_.clickInList(lookup(PREF_TABLE, "vibration"));
 	}
 	
 	public void testSleepPlaylist() {
@@ -317,6 +323,7 @@ public class TestPortraitUI
 		solo_.clickOnScreen(x, y);
 		solo_.sleep(5000);
 		//goto prev index
+		solo_.finishOpenedActivities();
 	}
 	
 	//TODO: fix!
