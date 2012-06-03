@@ -114,12 +114,14 @@ public class TestPortraitUI
 			new Name2Index("playlist_directory", 1),
 			new Name2Index("sleep_playlist", 2),
 			new Name2Index("wakeup_playlist", 3),
-			new Name2Index("create_playlist", 4),
-			new Name2Index("default_time", 6),
-			new Name2Index("vibration", 7),
-			new Name2Index("sleep_volume", 8),
-			new Name2Index("wakeup_volume", 9),
-			new Name2Index("clear_webview_cache", 10),
+			new Name2Index("reload_playlist", 4),
+			new Name2Index("create_playlist", 5),
+			new Name2Index("sleep_time", 6),
+			new Name2Index("default_time", 7),
+			new Name2Index("vibration", 8),
+			new Name2Index("sleep_volume", 9),
+			new Name2Index("wakeup_volume", 10),
+			new Name2Index("clear_webview_cache", 11),
 			new Name2Index("help", 13),
 			new Name2Index("version", 14)
 		};
@@ -169,7 +171,9 @@ public class TestPortraitUI
 	
 	@Smoke
 	public void testSetNow() {
-		TimePicker picker = solo_.getCurrentTimePickers().get(0);
+		//cannot get timepicker of Xperia acro...
+		//TimePicker picker = solo_.getCurrentTimePickers().get(0);
+		TimePicker picker = (TimePicker)solo_.getView(R.id.timePicker1);
 		solo_.clickOnButton(solo_.getString(R.string.set_now_short));
 		//umm... yield to target activity
 		Calendar now = new GregorianCalendar();
