@@ -1,10 +1,14 @@
-# malarm_test - UI test of malarm application
-## What is this?
+===============================================================================
+ malarm_test - UI test of malarm application
+===============================================================================
 
+ What is this?
+-------------------
 This is a UI test of malarm using Robotium library. This is submodule of
 malarm.
 
-## How to clone
+ How to clone
+-------------------
 1. Clone malarm
  git clone git://github.com/mamewotoko/malarm.git malarm
 2. In cloned directory, clone submoudle
@@ -13,7 +17,8 @@ malarm.
  git submodule update
 3. malarm_test is cloned in test/malarm_test directory.
 
-## How to run:
+ How to run:
+-------------------
 1. Download robotium-solo-xx.jar file
  e.g. execute libs/setup.sh in lib directory
 
@@ -26,13 +31,14 @@ Malarm source repository: git://github.com/mamewotoko/malarm.git
 5. Build
 6. Run as Android JUnit test
 
-## How to start testing from the command line
+ How to start testing from the command line
+-------------------
     ant test
-
 or
     adb shell am instrument -w com.mamewo.malarm_test/android.test.InstrumentationTestRunner
 
-## TODO
+ TODO
+-------------------
 - merge capture code (mimicj) or use scirocco
  http://code.google.com/p/scirocco/wiki/QuickStartScirocco_JP
 - give test parameter from child class and test in abstract parent class
@@ -40,7 +46,8 @@ or
 - fix setAlarm test
 - 
 
-## memo
+ memo
+-------------------
 - command line from build to test
 ant debug
 ant installd test
@@ -54,7 +61,8 @@ ant debug
 ant emma installd
 -- coverage output is stored as coverage/index.html.
 
-## Reference
+ Reference
+-------------------
 - Robotium:
 http://code.google.com/p/robotium/
 - How to use ddmslib to capture screen shot
@@ -65,4 +73,3 @@ http://nativedriver.googlecode.com/files/Screenshot_on_Android_Internals.pdf
 ----
 Takashi Masuyama < mamewotoko@gmail.com >  
 http://www002.upp.so-net.ne.jp/mamewo/
-
