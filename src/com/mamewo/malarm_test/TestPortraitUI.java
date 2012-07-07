@@ -143,13 +143,12 @@ public class TestPortraitUI
 		super.tearDown();
 	} 
 
-	//name of test case MUST begin with "test"
 	@Smoke
 	public void testSetAlarm() {
 		Date now = new Date(System.currentTimeMillis() + 60 * 1000);
 		solo_.setTimePicker(0, now.getHours(), now.getMinutes());
 		solo_.clickOnView(solo_.getView(R.id.alarm_button));
-		solo_.sleep(500);
+		solo_.sleep(2000);
 		TextView targetTimeLabel = (TextView)solo_.getView(R.id.target_time_label);
 		TextView sleepTimeLabel = (TextView)solo_.getView(R.id.sleep_time_label);
 		Assert.assertTrue("check wakeup label", targetTimeLabel.getText().length() > 0);
@@ -158,6 +157,7 @@ public class TestPortraitUI
 		solo_.sleep(61 * 1000);
 		Assert.assertTrue("Switch alarm button wording", solo_.searchToggleButton(solo_.getString(R.string.stop_alarm)));
 		Assert.assertTrue("Correct alarm toggle button state", solo_.isToggleButtonChecked(solo_.getString(R.string.stop_alarm)));
+		Assert.assertTrue("check sleep label after wakeup", sleepTimeLabel.getText().length() == 0);
 		//TODO: check music?
 		//TODO: check vibration
 		//TODO: check notification
@@ -165,7 +165,7 @@ public class TestPortraitUI
 		solo_.sleep(1000);
 		captureScreen("test_setAlarmTest.png");
 		Assert.assertTrue("check wakeup label", targetTimeLabel.getText().length() == 0);
-		Assert.assertTrue("check sleep label", sleepTimeLabel.getText().length() == 0);
+		Assert.assertTrue("check sleep label after alarm is stopped", sleepTimeLabel.getText().length() == 0);
 		Assert.assertTrue("Alarm stopped", !solo_.isToggleButtonChecked(solo_.getString(R.string.set_alarm)));
 	}
 	
