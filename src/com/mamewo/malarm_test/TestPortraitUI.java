@@ -4,9 +4,12 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+
 import junit.framework.Assert;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.suitebuilder.annotation.Smoke;
@@ -36,27 +39,9 @@ public class TestPortraitUI
 	private String _hostname = "192.168.0.20";
 	//set true to capture screen (it requires CaptureServer in mimicj)
 	private boolean _support_capture = false;
-	private static class Name2Index {
-		String _name;
-		int _index;
-		
-		public Name2Index(String name, int index) {
-			_name = name;
-			_index = index;
-		}
-	}
 
-	private static Name2Index[] PREF_TABLE = null;
+	private static HashMap<String, Integer> PREF_TABLE = null;
 
-	private int lookup(Name2Index[] table, String name) {
-		for (Name2Index entry : table) {
-			if (entry._name.equals(name)) {
-				return entry._index;
-			}
-		}
-		throw new RuntimeException("lookup: " + name + " is not found");
-	}
-	
 	public void initCapture() throws IOException {
 		if (!_support_capture) {
 			return;
@@ -101,31 +86,28 @@ public class TestPortraitUI
 	public TestPortraitUI() {
 		super("com.mamewo.malarm24", MalarmActivity.class);
 	}
+	
+//	final static
+//	private int[] TITLE_ID_LIST = {
+//			R.string.pref_webview_url,
+//			R.string.playlist_path_title,
+//			R.string.pref_sleep_playlist,
+//			R.string.pref_wakeup_playlist,
+//			R.string.pref_reload_playlist,
+//			R.string.pref_create_playlist_title,
+//			R.string.pref_sleep_volume_title,
+//			R.string.pref_wakeup_volume_title,
+//			R.string.pref_clear_webview_cache_title,
+//			R.string.use_native_player_title,
+//			R.string.help_title,
+//			R.string.malarm_version_title
+//	};
 
 	@Override
 	public void setUp() throws Exception {
 		Log.i("malarm_test", "setUp is called " + PREF_TABLE);
 		solo_ = new Solo(getInstrumentation(), getActivity());
 		initCapture();
-		//static field is cleared to null, why?
-		//crete this table automatically
-		PREF_TABLE = new Name2Index[] {
-			new Name2Index("site", 0),
-			new Name2Index("playlist_directory", 1),
-			new Name2Index("sleep_playlist", 2),
-			new Name2Index("wakeup_playlist", 3),
-			new Name2Index("reload_playlist", 4),
-			new Name2Index("create_playlist", 5),
-			new Name2Index("sleep_time", 6),
-			new Name2Index("default_time", 7),
-			new Name2Index("vibration", 8),
-			new Name2Index("sleep_volume", 9),
-			new Name2Index("wakeup_volume", 10),
-			new Name2Index("clear_webview_cache", 11),
-			new Name2Index("help", 13),
-			new Name2Index("version", 14)
-		};
-		solo_.sleep(1000);
 	}
 
 	@Override
@@ -143,6 +125,27 @@ public class TestPortraitUI
 		super.tearDown();
 	} 
 
+	public boolean selectPreference(int titleId) {
+		String targetTitle = solo_.getString(titleId);
+
+		TextView view = null;
+		do {
+			ArrayList<TextView> list = solo_.getCurrentTextViews(null);
+			for (TextView listText : list) {
+				if(targetTitle.equals(listText.getText())){
+					view = listText;
+					break;
+				}
+			}
+		}
+		while(null == view && solo_.scrollDownList(0));
+		if (view == null) {
+			return false;
+		}
+		solo_.clickOnView(view);
+		return true;
+	}
+	
 	@Smoke
 	public void testSetAlarm() {
 		Date now = new Date(System.currentTimeMillis() + 60 * 1000);
@@ -209,8 +212,6 @@ public class TestPortraitUI
 		Assert.assertTrue(afterText == null || afterText.length() == 0);
 	}
 
-	/////////////////
-	//test menu
 	public void testStopVibrationMenu() {
 		//TODO: cannot select menu by japanese, why?
 		solo_.clickOnMenuItem(solo_.getString(R.string.stop_vibration));
@@ -229,9 +230,8 @@ public class TestPortraitUI
 	@Smoke
 	public void testSitePreference() {
 		solo_.clickOnMenuItem(solo_.getString(R.string.pref_menu));
-		//select site configuration
-		//TODO: make function...
-		solo_.clickInList(lookup(PREF_TABLE, "site"));
+		selectPreference(R.string.playlist_path_title);
+		//TODO: add more specific assert
 		Assert.assertTrue(true);
 		captureScreen("test_Preference.png");
 	}
@@ -239,7 +239,7 @@ public class TestPortraitUI
 	@Smoke
 	public void testCreatePlaylists() {
 		solo_.clickOnMenuItem(solo_.getString(R.string.pref_menu));
-		solo_.clickInList(lookup(PREF_TABLE, "create_playlist"));
+		selectPreference(R.string.pref_create_playlist_title);
 		solo_.sleep(5000);
 		Assert.assertTrue(true);
 	}
@@ -247,7 +247,7 @@ public class TestPortraitUI
 	@Smoke
 	public void testSleepVolume() {
 		solo_.clickOnMenuItem(solo_.getString(R.string.pref_menu));
-		solo_.clickInList(lookup(PREF_TABLE, "sleep_volume"));
+		selectPreference(R.string.pref_sleep_volume_title);
 		//TODO: push plus/minus
 		Assert.assertTrue(true);
 	}
@@ -255,7 +255,7 @@ public class TestPortraitUI
 	@Smoke
 	public void testWakeupVolume() {
 		solo_.clickOnMenuItem(solo_.getString(R.string.pref_menu));
-		solo_.clickInList(lookup(PREF_TABLE, "wakeup_volume"));
+		selectPreference(R.string.pref_wakeup_volume_title);
 		//TODO: push plus/minus
 		Assert.assertTrue(true);
 	}
@@ -265,46 +265,75 @@ public class TestPortraitUI
 	@Smoke
 	public void testDefaultTimePreference() {
 		solo_.clickOnMenuItem(solo_.getString(R.string.pref_menu));
-		solo_.clickInList(lookup(PREF_TABLE, "default_time"));
+		selectPreference(R.string.pref_default_time_title);
 		Assert.assertTrue(true);
 	}
 
 	@Smoke
 	public void testVibration() {
 		solo_.clickOnMenuItem(solo_.getString(R.string.pref_menu));
-		solo_.clickInList(lookup(PREF_TABLE, "vibration"));
+		selectPreference(R.string.pref_vibration);
 		solo_.sleep(1000);
-		solo_.clickInList(lookup(PREF_TABLE, "vibration"));
 	}
 	
+	@Smoke
 	public void testSleepPlaylist() {
 		solo_.clickOnMenuItem(solo_.getString(R.string.pref_menu));
-		solo_.clickInList(lookup(PREF_TABLE, "sleep_playlist"));
+		selectPreference(R.string.pref_sleep_playlist);
 		solo_.scrollDown();
 	}
 	
+	@Smoke
+	public void testReloadPlaylist() {
+		solo_.clickOnMenuItem(solo_.getString(R.string.pref_menu));
+		selectPreference(R.string.pref_reload_playlist);
+	}
+	
+	@Smoke
 	public void testClearCache() {
 		solo_.clickOnMenuItem(solo_.getString(R.string.pref_menu));
-		solo_.clickInList(lookup(PREF_TABLE, "clear_webview_cache"));
+		selectPreference(R.string.pref_clear_webview_cache_title);
 		solo_.sleep(500);
 	}
 	
+	@Smoke
 	public void testHelp() {
 		solo_.clickOnMenuItem(solo_.getString(R.string.pref_menu));
-		solo_.clickInList(lookup(PREF_TABLE, "help"));
+		selectPreference(R.string.help_title);
 		solo_.sleep(4000);
 		captureScreen("test_Help.png");
 	}
 	
+	@Smoke
+	public void testDummyListScroll() {
+		solo_.clickOnMenuItem(solo_.getString(R.string.pref_menu));
+		solo_.scrollDown();
+		solo_.sleep(500);
+		View targetView = null;
+		for (TextView view : solo_.getCurrentTextViews(null)) {
+			Log.i(TAG, "title: " + view.getText());
+			if(view.getText().equals("Sleep tunes volume")){
+				targetView = view;
+			}
+		}
+		if (targetView != null) {
+			solo_.clickOnView(targetView);
+		}
+		solo_.sleep(5000);
+	}
+	
+	@Smoke
 	public void testVersion() {
 		solo_.clickOnMenuItem(solo_.getString(R.string.pref_menu));
-		solo_.clickInList(lookup(PREF_TABLE, "version"));
+		selectPreference(R.string.malarm_version_title);
+		//TODO: click logo
 		captureScreen("test_Version.png");
 	}
 
+	@Smoke
 	public void testPlaylistLong() {
 		solo_.clickOnMenuItem(solo_.getString(R.string.pref_menu));
-		solo_.clickInList(lookup(PREF_TABLE, "sleep_playlist"));
+		selectPreference(R.string.pref_sleep_playlist);
 		solo_.sleep(500);
 		solo_.clickLongInList(0);
 		captureScreen("test_playlistlong.png");
