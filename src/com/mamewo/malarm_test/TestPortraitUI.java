@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 
 import junit.framework.Assert;
 import android.test.ActivityInstrumentationTestCase2;
@@ -39,8 +38,6 @@ public class TestPortraitUI
 	private String _hostname = "192.168.0.20";
 	//set true to capture screen (it requires CaptureServer in mimicj)
 	private boolean _support_capture = false;
-
-	private static HashMap<String, Integer> PREF_TABLE = null;
 
 	public void initCapture() throws IOException {
 		if (!_support_capture) {
@@ -105,7 +102,6 @@ public class TestPortraitUI
 
 	@Override
 	public void setUp() throws Exception {
-		Log.i("malarm_test", "setUp is called " + PREF_TABLE);
 		solo_ = new Solo(getInstrumentation(), getActivity());
 		initCapture();
 	}
@@ -132,6 +128,7 @@ public class TestPortraitUI
 		do {
 			ArrayList<TextView> list = solo_.getCurrentTextViews(null);
 			for (TextView listText : list) {
+				Log.i(TAG, "listtext: " + listText.getText());
 				if(targetTitle.equals(listText.getText())){
 					view = listText;
 					break;
@@ -144,6 +141,11 @@ public class TestPortraitUI
 		}
 		solo_.clickOnView(view);
 		return true;
+	}
+	private void startPreferenceActivity() {
+		solo_.clickOnMenuItem(solo_.getString(R.string.pref_menu));
+		solo_.waitForActivity("MalarmPreference");
+		solo_.sleep(500);
 	}
 	
 	@Smoke
@@ -229,7 +231,7 @@ public class TestPortraitUI
 	//config screen
 	@Smoke
 	public void testSitePreference() {
-		solo_.clickOnMenuItem(solo_.getString(R.string.pref_menu));
+		startPreferenceActivity();
 		selectPreference(R.string.playlist_path_title);
 		//TODO: add more specific assert
 		Assert.assertTrue(true);
@@ -238,7 +240,7 @@ public class TestPortraitUI
 	
 	@Smoke
 	public void testCreatePlaylists() {
-		solo_.clickOnMenuItem(solo_.getString(R.string.pref_menu));
+		startPreferenceActivity();
 		selectPreference(R.string.pref_create_playlist_title);
 		solo_.sleep(5000);
 		Assert.assertTrue(true);
@@ -246,7 +248,7 @@ public class TestPortraitUI
 	
 	@Smoke
 	public void testSleepVolume() {
-		solo_.clickOnMenuItem(solo_.getString(R.string.pref_menu));
+		startPreferenceActivity();
 		selectPreference(R.string.pref_sleep_volume_title);
 		//TODO: push plus/minus
 		Assert.assertTrue(true);
@@ -254,7 +256,7 @@ public class TestPortraitUI
 
 	@Smoke
 	public void testWakeupVolume() {
-		solo_.clickOnMenuItem(solo_.getString(R.string.pref_menu));
+		startPreferenceActivity();
 		selectPreference(R.string.pref_wakeup_volume_title);
 		//TODO: push plus/minus
 		Assert.assertTrue(true);
@@ -264,49 +266,69 @@ public class TestPortraitUI
 	
 	@Smoke
 	public void testDefaultTimePreference() {
-		solo_.clickOnMenuItem(solo_.getString(R.string.pref_menu));
+		startPreferenceActivity();
 		selectPreference(R.string.pref_default_time_title);
 		Assert.assertTrue(true);
 	}
 
 	@Smoke
 	public void testVibration() {
-		solo_.clickOnMenuItem(solo_.getString(R.string.pref_menu));
+		startPreferenceActivity();
 		selectPreference(R.string.pref_vibration);
 		solo_.sleep(1000);
 	}
-	
+
 	@Smoke
 	public void testSleepPlaylist() {
-		solo_.clickOnMenuItem(solo_.getString(R.string.pref_menu));
+		startPreferenceActivity();
 		selectPreference(R.string.pref_sleep_playlist);
-		solo_.scrollDown();
+		solo_.waitForActivity("PlaylistViewer");
+		solo_.assertCurrentActivity("Playlist viewer should start", PlaylistViewer.class);
+	}
+
+	@Smoke
+	public void testWakeupPlaylist() {
+		startPreferenceActivity();
+		selectPreference(R.string.pref_wakeup_playlist);
+		solo_.waitForActivity("PlaylistViewer");
+		//TODO: check title
+		solo_.assertCurrentActivity("Playlist viewer should start", PlaylistViewer.class);
+	}
+
+	@Smoke
+	public void testPlaylistLong() {
+		startPreferenceActivity();
+		selectPreference(R.string.pref_sleep_playlist);
+		solo_.waitForActivity("PlaylistViewer");
+		solo_.clickLongInList(0);
+		//TODO: add check
+		captureScreen("test_playlistlong.png");
 	}
 	
+
 	@Smoke
 	public void testReloadPlaylist() {
-		solo_.clickOnMenuItem(solo_.getString(R.string.pref_menu));
+		startPreferenceActivity();
 		selectPreference(R.string.pref_reload_playlist);
 	}
 	
 	@Smoke
 	public void testClearCache() {
-		solo_.clickOnMenuItem(solo_.getString(R.string.pref_menu));
+		startPreferenceActivity();
 		selectPreference(R.string.pref_clear_webview_cache_title);
 		solo_.sleep(500);
 	}
 	
 	@Smoke
 	public void testHelp() {
-		solo_.clickOnMenuItem(solo_.getString(R.string.pref_menu));
+		startPreferenceActivity();
 		selectPreference(R.string.help_title);
 		solo_.sleep(4000);
 		captureScreen("test_Help.png");
 	}
 	
-	@Smoke
 	public void testDummyListScroll() {
-		solo_.clickOnMenuItem(solo_.getString(R.string.pref_menu));
+		startPreferenceActivity();
 		solo_.scrollDown();
 		solo_.sleep(500);
 		View targetView = null;
@@ -324,21 +346,12 @@ public class TestPortraitUI
 	
 	@Smoke
 	public void testVersion() {
-		solo_.clickOnMenuItem(solo_.getString(R.string.pref_menu));
+		startPreferenceActivity();
 		selectPreference(R.string.malarm_version_title);
 		//TODO: click logo
 		captureScreen("test_Version.png");
 	}
 
-	@Smoke
-	public void testPlaylistLong() {
-		solo_.clickOnMenuItem(solo_.getString(R.string.pref_menu));
-		selectPreference(R.string.pref_sleep_playlist);
-		solo_.sleep(500);
-		solo_.clickLongInList(0);
-		captureScreen("test_playlistlong.png");
-	}
-	
 	//TODO: fix!
 	public void testDoubleTouchLeft() {
 		float x = (float)(SCREEN_WIDTH / 6);
