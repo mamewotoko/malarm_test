@@ -14,6 +14,7 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.test.suitebuilder.annotation.Smoke;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import com.jayway.android.robotium.solo.Solo;
@@ -258,10 +259,29 @@ public class TestPortraitUI
 	public void testWakeupVolume() {
 		startPreferenceActivity();
 		selectPreference(R.string.pref_wakeup_volume_title);
-		//TODO: push plus/minus
 		Assert.assertTrue(true);
 	}
 
+	@Smoke
+	public void testVolumeDown(){
+		startPreferenceActivity();
+		selectPreference(R.string.pref_wakeup_volume_title);
+		solo_.clickOnButton("-");
+		solo_.clickOnButton("OK");
+		//TODO: check volume
+	}
+
+	@Smoke
+	public void testVolumeUp(){
+		startPreferenceActivity();
+		selectPreference(R.string.pref_wakeup_volume_title);
+		solo_.clickOnButton("\\+");
+		solo_.clickOnButton("OK");
+		//TODO: check volume
+	}
+	
+	//TODO: add to test number / alphabet into edit box of volume preference
+	
 	//add double tap test of webview
 	
 	@Smoke
@@ -348,10 +368,26 @@ public class TestPortraitUI
 	public void testVersion() {
 		startPreferenceActivity();
 		selectPreference(R.string.malarm_version_title);
-		//TODO: click logo
+		ImageView view = solo_.getImage(1);
+		solo_.clickOnView(view);
+		//TODO: check that browser starts
 		captureScreen("test_Version.png");
 	}
 
+//	@Smoke
+//	public void testDummy() {
+//		solo_.sleep(10000);
+//		solo_.clickOnScreen(20, 160);
+//		solo_.sleep(500);
+//		Log.i(TAG, "********** testDummy double click");
+////		solo_.clickOnScreen(50, 250);
+////		solo_.clickOnScreen(50, 250);
+//		View view = solo_.getView(R.id.webView1);
+//		solo_.clickOnView(view);
+//		solo_.clickOnView(view);
+//		solo_.sleep(10000);
+//	}
+	
 	//TODO: fix!
 	public void testDoubleTouchLeft() {
 		float x = (float)(SCREEN_WIDTH / 6);
@@ -364,8 +400,8 @@ public class TestPortraitUI
 		
 		x = pos[0] + 40;
 		y = pos[1] + 40;
-		solo_.sleep(1000);
 		solo_.clickOnScreen(x, y);
+		solo_.sleep(100);
 		solo_.clickOnScreen(x, y);
 		solo_.sleep(5000);
 		//goto prev index
