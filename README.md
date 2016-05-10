@@ -9,11 +9,17 @@ This is a UI test of malarm using Robotium library. This is submodule of malarm.
 How to clone source code
 -------------------
 1. Clone malarm
- git clone git://github.com/mamewotoko/malarm.git malarm
+
+    ```
+    git clone git://github.com/mamewotoko/malarm.git malarm
+    ```
 2. In cloned directory, clone submoudle
- cd malarm
- git submodule init
- git submodule update
+
+    ```
+    cd malarm
+    git submodule init
+    git submodule update
+    ```
 3. malarm_test is cloned in test/malarm_test directory.
 
 How to run
@@ -31,10 +37,15 @@ Malarm source repository: git://github.com/mamewotoko/malarm.git
 
 How to start testing from the command line
 -------------------
-    ant test
-or
-    adb shell am instrument -w com.mamewo.malarm_test/android.test.InstrumentationTestRunner
 
+```
+    ant test
+```
+or
+
+```
+    adb shell am instrument -w com.mamewo.malarm_test/android.test.InstrumentationTestRunner
+```
 TODO
 -------------------
 - merge capture code (mimicj) or use scirocco
@@ -44,17 +55,30 @@ TODO
 
 Memo
 -------------------
-- command line from build to test
-ant debug
-ant installd test
-- monkey test (random UI test)
-adb shell monkey -p com.mamewo.malarm24 -v 10000
-- EMMA (code coverage)
--- build malarm with emma
-ant emma debug 
--- install malarm
-ant debug
-ant emma installd
+* command line from build to test
+
+    ```
+    ant debug
+    ant installd test
+    ```
+* monkey test (random UI test)
+
+    ```
+    adb shell monkey -p com.mamewo.malarm24 -v 10000
+    ```
+
+* EMMA (code coverage)
+  1. build malarm with emma
+
+    ```
+   ant emma debug 
+    ```
+  2. install malarm
+
+    ```
+    ant debug
+    ant emma installd
+    ```
 -- coverage output is stored as coverage/index.html.
 
 Reference
@@ -68,4 +92,4 @@ http://nativedriver.googlecode.com/files/Screenshot_on_Android_Internals.pdf
 
 ----
 Takashi Masuyama < mamewotoko@gmail.com >  
-http://www002.upp.so-net.ne.jp/mamewo/
+http://mamewo.ddo.jp/
