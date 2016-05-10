@@ -1,5 +1,4 @@
-===============================================================================
- malarm_test - UI test of malarm application
+malarm_test - UI test of malarm application
 ===============================================================================
 
 What is this?
