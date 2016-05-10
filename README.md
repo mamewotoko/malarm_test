@@ -48,10 +48,10 @@ or
 ```
 TODO
 -------------------
-- merge capture code (mimicj) or use scirocco
+* merge capture code (mimicj) or use scirocco
  http://code.google.com/p/scirocco/wiki/QuickStartScirocco_JP
-- give test parameter from child class and test in abstract parent class
-- check version of malarm before testing
+* give test parameter from child class and test in abstract parent class
+* check version of malarm before testing
 
 Memo
 -------------------
@@ -79,7 +79,7 @@ Memo
     ant debug
     ant emma installd
     ```
--- coverage output is stored as coverage/index.html.
+  3. coverage output is stored as ```coverage/index.html```.
 
 Reference
 -------------------
